@@ -14,5 +14,3 @@ export class LazyGetter<T> {
 		})
 	}
 }
-
-export default LazyGetter
