@@ -1,16 +1,13 @@
-export class LazyGetter<T> {
-	protected result: T | null = null
-
-	constructor(
-		target: { [ key: string ]: any },
-		name: string,
-		protected callback: () => T
-	) {
-		Object.defineProperty(target, name, {
-			get: (): T => {
-				if (this.result === null) this.result = callback()
-				return this.result
-			}
-		})
+class LG<T> {
+	protected result!: T
+	constructor(protected fn: () => T) {}
+	process(): T {
+		if (!this?.result) this.result = this.fn()
+		return this.result
 	}
+}
+
+export function LazyGetter<T>(fn: () => T) {
+	const lg = new LG<T>(fn)
+	return lg.process.bind(lg)
 }
